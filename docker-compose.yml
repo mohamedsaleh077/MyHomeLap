@@ -1,0 +1,139 @@
+name: self-ytmusic
+services:
+  mstream:
+    image: lscr.io/linuxserver/mstream:latest
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
+    container_name: mstream
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - ./mstream/data:/config
+      - ./Media/music:/music
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+
+  # jellyfin:
+  #   image: lscr.io/linuxserver/jellyfin:latest
+  #   deploy:
+  #   container_name: jellyfin
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - TZ=Etc/UTC
+  #     - JELLYFIN_PublishedServerUrl=http://192.168.0.5 #optional
+  #   volumes:
+  #     - /home/mohamed/jellyfin/library:/config
+  #     - /home/mohamed/tvseries:/data/tvshows
+  #     - /home/mohamed/Media:/data/movies
+  #   ports:
+  #     - 8096:8096
+  #     - 8920:8920 #optional
+  #     - 7359:7359/udp #optional
+  #     - 1900:1900/udp #optional
+  #   restart: unless-stopped
+
+  # calibre-web:
+  #   image: lscr.io/linuxserver/calibre-web:latest
+  #   container_name: calibre-web
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - TZ=Etc/UTC
+  #     - DOCKER_MODS=linuxserver/mods:universal-calibre #optional
+  #     - OAUTHLIB_RELAX_TOKEN_SCOPE=1 #optional
+  #   volumes:
+  #     - /home/mohamed/calibre-web/data:/config
+  #     - /home/mohamed/calibre/library:/books
+  #   ports:
+  #     - 8083:8083
+  #   restart: unless-stopped
+
+  filebrowser:
+    image: filebrowser/filebrowser
+    container_name: filebrowser
+    user: "1000:1000"
+    ports:
+      - "8080:80"
+    volumes:
+      - /home/:/srv
+      - filebrowser_database:/database
+      - filebrowser_config:/config
+    restart: unless-stopped
+
+  crafty:
+      container_name: crafty_container
+      image: registry.gitlab.com/crafty-controller/crafty-4:latest
+      restart: always
+      environment:
+          - TZ=Etc/UTC
+      ports:
+          - "8443:8443" # HTTPS
+          - "8123:8123" # DYNMAP
+          - "19132:19132/udp" # BEDROCK
+          - "25500-25600:25500-25600" # MC SERV PORT RANGE
+      volumes:
+          - ./docker/backups:/crafty/backups
+          - ./docker/logs:/crafty/logs
+          - ./docker/servers:/crafty/servers
+          - ./docker/config:/crafty/app/config
+          - ./docker/import:/crafty/import
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    deploy:
+      resources:
+        limits:
+          memory: 2G 
+    volumes:
+      - ./ollama:/root/.ollama
+    ports:
+      - 11434:11434
+    restart: unless-stopped
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    ports:
+      - 3001:8080
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+    restart: unless-stopped
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: always
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    ports:
+      - 9443:9443
+    
+  homarr:
+    container_name: homarr
+    image: ghcr.io/ajnart/homarr:latest
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./homarr/configs:/app/data/configs
+      - ./homarr/icons:/app/public/icons
+      - ./homarr/data:/data
+    ports:
+      - '7575:7575'
+
+volumes:
+  filebrowser_database:
+  filebrowser_config:
+  portainer_data:

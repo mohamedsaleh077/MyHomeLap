@@ -1,4 +1,4 @@
-name: self-ytmusic
+name: my-home-lap
 services:
   mstream:
     image: lscr.io/linuxserver/mstream:latest
@@ -94,7 +94,7 @@ services:
         limits:
           memory: 2G 
     volumes:
-      - ./ollama:/root/.ollama
+      - ~/ollama:/root/.ollama
     ports:
       - 11434:11434
     restart: unless-stopped

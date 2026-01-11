@@ -14,7 +14,7 @@ I used my 12-years-old x86 pc as a server in my room! and here I am documenting 
     - aka: intel HD integrated GPU
 - Storage:
     - WDC [WD5000AAKX](https://www.newegg.com/Western-Digital-Blue-WD5000AAKX-500GB/p/N82E16822136769?recaptcha=pass) (WD blue 500GB 7200RPM) 2015 
-    - WDC [WD6400AARS](https://www.newegg.com/western-digital-wd-green-wd6400aars-640gb/p/N82E16822136737) (WD Green 640GB 5400RPM - 12% health) 2010 :(
+    - WDC [WD6400AARS](https://www.newegg.com/western-digital-wd-green-wd6400aars-640gb/p/N82E16822136737) (WD Green 640GB 5400RPM - 12% health) 2010 :( I am using it as a read-only archive for useless stuff, it is dangerouse to keep important data on it.
 - cheap old [ZTE router](https://www.amazon.eg/-/en/Zte-H108n-Adsl2-Wireless-Router/dp/B091J99485) for 150EGP (10USD ig).
 - cheap CAT6 LAN cable, two meters, for 20EGP (0.4USD).
 
@@ -28,7 +28,7 @@ also I had a 2gb slot of ram from my previouse PC, it was ddr2 and I replaced it
 I have edited some settings to get the max possible speed in local network, you can access the admin panel from `192.168.1.1` using `admin`, `admin` as credintials, here it is:
 - Network > WLAN 	 	
     - Mode: mixed(802.11b,802.11g,802.11n)
-    - Band Width: 50Mhz
+    - Band Width: 40Mhz
     - Channel: 13	
     - SGI Enable: yes	
     - Beacon Interval 100 ms
